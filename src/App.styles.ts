@@ -21,4 +21,9 @@ export const StyledButton = styled(IconButton)`
         margin-right: 85px;
         margin-top: -2px;
     }
+
+    .signup {
+        margin-right: 20px;
+        margin-top: -2px;
+    }
 `;

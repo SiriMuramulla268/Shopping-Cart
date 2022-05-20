@@ -10,14 +10,18 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import Badge from '@material-ui/core/Badge';
 import Box from '@material-ui/core/Box';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import LoginIcon from '@material-ui/icons/LockOpen';
+import LoginIcon from '@material-ui/icons/LockOpen'; 
+import SignupIcon from '@material-ui/icons/HowToReg';
 //components
 import Item from './Item/Item';
 import Cart from './Cart/Cart';
 import LoginModal from './LoginModal/LoginModal';
+import SignupModal from './SignupModal/SignupModal';
 //style components
 import { Wrapper } from  './App.styles';
 import { StyledButton } from './App.styles';
+import { AuthProvider } from './Contexts/AuthContext';
+
 
 //Types
 export type CartItemType = {
@@ -41,6 +45,7 @@ function App() {
   const [cartItems, setCartItems] = useState([] as CartItemType[]);
   const [wishList, setWishList] = useState([] as CartItemType[]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isSignupModalVisible, setIsSignupModalVisible] = useState(false);
 
   const { data, isLoading, error } = useQuery<CartItemType[]>(
     'products', 
@@ -97,40 +102,50 @@ function App() {
     setIsModalVisible(wasModalVisible => !wasModalVisible) 
   }
 
+  const toggleSignupModal = () => {
+    setIsSignupModalVisible(wasModalVisible => !wasModalVisible) 
+  }
+
   return (
+    <AuthProvider>
       <Wrapper>
-          <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
-            <Cart 
-              cartItems={cartItems} 
-              addTocart={handleAddToCart}
-              removeFromCart={handleRemoveFromCart}
-            />
-          </Drawer>
-          <StyledButton>  
-            <div className='lock'>  
-                <LoginIcon color="primary" onClick={toggleModal}/>
-                <LoginModal isModalVisible={isModalVisible} onBackDropClick={toggleModal} header="YourCart :)" message="Please Log in"/>
-            </div>
-          </StyledButton>
-          <StyledButton>  
-            <div className='login'>  
-                <AccountCircle color="primary"/>
-            </div>
-          </StyledButton>
-          <StyledButton>  
-              <Badge badgeContent={getTotalItem(cartItems)} color='error'>
-                  <AddShoppingCartIcon color="primary" onClick={() => setCartOpen(true)}/>
-              </Badge>
-          </StyledButton>
-          
-          <Grid container spacing={3}>
-            {data?.map(item => (
-              <Grid item key={item.id} xs={12} sm={3}>
-                  <Item item={item} handleAddToCart={handleAddToCart} cartItems={cartItems} handleWishlist={handleWishlist}/>
-              </Grid>
-            ))}   
-          </Grid>
+        <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
+          <Cart 
+            cartItems={cartItems} 
+            addTocart={handleAddToCart}
+            removeFromCart={handleRemoveFromCart}
+          />
+        </Drawer>
+        <StyledButton>  
+          <div className='signup'>  
+              <SignupIcon color="primary" onClick={toggleSignupModal}/>  
+              <SignupModal isModalVisible={isSignupModalVisible} onBackDropClick={toggleSignupModal} header="YourCart :)" message="Signup"/> 
+          </div>
+          <div className='lock'>
+              <LoginIcon color="primary" onClick={toggleModal}/>
+              <LoginModal isModalVisible={isModalVisible} onBackDropClick={toggleModal} header="YourCart :)" message="Login"/>
+          </div>
+        </StyledButton>
+        <StyledButton>  
+          <div className='login'>  
+              <AccountCircle color="primary"/>
+          </div>
+        </StyledButton>
+        <StyledButton>  
+            <Badge badgeContent={getTotalItem(cartItems)} color='error'>
+                <AddShoppingCartIcon color="primary" onClick={() => setCartOpen(true)}/>
+            </Badge>
+        </StyledButton>
+        
+        <Grid container spacing={3}>
+          {data?.map(item => (
+            <Grid item key={item.id} xs={12} sm={3}>
+                <Item item={item} handleAddToCart={handleAddToCart} cartItems={cartItems} handleWishlist={handleWishlist}/>
+            </Grid>
+          ))}   
+        </Grid>
       </Wrapper>
+    </AuthProvider>
   );
 }
 

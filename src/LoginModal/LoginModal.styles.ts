@@ -12,9 +12,9 @@ const ModalContainer = styled.div`
 export const DesktopModalContainer = styled(ModalContainer)`
     border-radius: 7px;
     box-shadow: 0 0 32px rgba(0,0,0,0.5);
-    padding: 40px;
+    padding: 30px;
     width: 450px;
-    font-size: 26px;
+    font-size: 15px;
 `;
 
 export const Header = styled.h3`
@@ -27,8 +27,8 @@ export const Header = styled.h3`
 `;
 
 export const Message = styled.p`
-    color: #aaa;
-    font-size: 15px;
+    color: #fff;
+    font-size: 20px;
     font-weight: 500;
     margin: 0 0 36px;
     text-align: center;
