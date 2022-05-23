@@ -14,11 +14,29 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] =  useState()
 
   function signup(email, password) {
-    return createUserWithEmailAndPassword(auth, email, password);
+    createUserWithEmailAndPassword(auth, email, password);
   }
 
   function login(email, password) {
-    return signInWithEmailAndPassword(auth, email, password);
+    signInWithEmailAndPassword(auth, email, password).then((res) => {
+      // dispatch({ type: "LOGIN", payload: res.user });
+      return console.log(res)
+    })
+    .catch((err) => {
+      if (err.code === "auth/") {
+        return "The password you entered does not match to this user.";
+        // console.log("The password you entered does not match to this user.")
+        // setError("The password you entered does not match to this user.");
+      }
+      else {
+        // return err.message;
+        console.log(err.message);
+        // setError(err.message);
+      }
+    });
+    // .finally(() => {
+    //   setIsPending(false);
+    // });
   }
 
   useEffect(() => {

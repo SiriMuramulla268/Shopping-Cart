@@ -1,11 +1,8 @@
  import CartItem from "../CartItem/CartItem";
-
- //Styles
  import { Wrapper } from './Cart.styles';
-
- //Types
  import { CartItemType } from '../App';
-import Item from "../Item/Item";
+ import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+
 
  type Props = {
     cartItems: CartItemType[];
@@ -20,8 +17,10 @@ import Item from "../Item/Item";
 
     return (
         <Wrapper>
-            <h2>Shopping Cart</h2>
-            {cartItems.length === 0 ? <p>No items in cart</p> : null}
+            <nav className="navbar navbar-light nav">
+                <h3 className="heading">Cart Items <ShoppingBasketIcon/></h3>
+            </nav>
+            {cartItems.length === 0 ? <p className="empty-cart">No items in cart :(</p> : null}
             {cartItems.map(item => (
                 <CartItem 
                     key={item.id}
@@ -30,8 +29,10 @@ import Item from "../Item/Item";
                     removeFromCart={removeFromCart}
                 /> 
             ))}
-            {cartItems.length > 0 && <h2>Total Price : ${calculateTotal(cartItems).toFixed(2)}</h2>}
-            
+            <div>
+                {cartItems.length > 0 && <p className="total-price">&nbsp;Total Price : ${calculateTotal(cartItems).toFixed(2)}</p>}
+                {/* {cartItems.length > 0 && <button>Proceed to pay</button>} */}
+            </div>
         </Wrapper>
     )
  }

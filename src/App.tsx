@@ -6,7 +6,8 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
 import Grid from '@material-ui/core/Grid';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import AddShoppingCartIcon from '@material-ui/icons/ShoppingCartOutlined';
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import Badge from '@material-ui/core/Badge';
 import Box from '@material-ui/core/Box';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -21,8 +22,6 @@ import SignupModal from './SignupModal/SignupModal';
 import { Wrapper } from  './App.styles';
 import { StyledButton } from './App.styles';
 import { AuthProvider } from './Contexts/AuthContext';
-
-
 //Types
 export type CartItemType = {
   id : string; 
@@ -46,6 +45,7 @@ function App() {
   const [wishList, setWishList] = useState([] as CartItemType[]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isSignupModalVisible, setIsSignupModalVisible] = useState(false);
+  const [user, setUser] = useState();
 
   const { data, isLoading, error } = useQuery<CartItemType[]>(
     'products', 
@@ -116,27 +116,38 @@ function App() {
             removeFromCart={handleRemoveFromCart}
           />
         </Drawer>
-        <StyledButton>  
-          <div className='signup'>  
-              <SignupIcon color="primary" onClick={toggleSignupModal}/>  
-              <SignupModal isModalVisible={isSignupModalVisible} onBackDropClick={toggleSignupModal} header="YourCart :)" message="Signup"/> 
+        <nav className="navbar navbar-light nav">
+          <div className="container-fluid">
+            <h1 className="heading">YourCart <ShoppingBasketIcon/></h1>
+            <form className="d-flex">
+              <input className="form-control me-2 search" type="search" placeholder="Search" aria-label="Search"/>
+              <button className="btn btn-outline-success search-btn" type="submit">Search</button>
+              <StyledButton> 
+                <div className='signup'>  
+                  <SignupIcon onClick={toggleSignupModal} style={{color: "#e0e2e5"}}/>  
+                  <SignupModal isSignupModalVisible={isSignupModalVisible} onBackDropClick={toggleSignupModal} header="YourCart :)" message="Signup"/> 
+                </div>
+              </StyledButton>
+              <StyledButton>
+                <div className='lock'>
+                  <LoginIcon onClick={toggleModal} style={{color: "#e0e2e5"}}/>
+                  <LoginModal isModalVisible={isModalVisible} onBackDropClick={toggleModal} header="YourCart :)" message="Login" user={setUser}/>
+                </div>
+              </StyledButton> 
+              <StyledButton>
+                <div className='login'>
+                  <AccountCircle style={{color: "#e0e2e5"}}/>
+                </div>
+                <span className='user'>{user}</span>
+              </StyledButton> 
+              <StyledButton>  
+                <Badge badgeContent={getTotalItem(cartItems)} color='error' style={{color: "#e0e2e5"}}>
+                    <AddShoppingCartIcon onClick={() => setCartOpen(true)}/>
+                </Badge>
+              </StyledButton>
+            </form>
           </div>
-          <div className='lock'>
-              <LoginIcon color="primary" onClick={toggleModal}/>
-              <LoginModal isModalVisible={isModalVisible} onBackDropClick={toggleModal} header="YourCart :)" message="Login"/>
-          </div>
-        </StyledButton>
-        <StyledButton>  
-          <div className='login'>  
-              <AccountCircle color="primary"/>
-          </div>
-        </StyledButton>
-        <StyledButton>  
-            <Badge badgeContent={getTotalItem(cartItems)} color='error'>
-                <AddShoppingCartIcon color="primary" onClick={() => setCartOpen(true)}/>
-            </Badge>
-        </StyledButton>
-        
+        </nav>
         <Grid container spacing={3}>
           {data?.map(item => (
             <Grid item key={item.id} xs={12} sm={3}>

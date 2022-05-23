@@ -2,11 +2,12 @@ import { StylesContext } from '@material-ui/styles';
 import styled from 'styled-components'
 
 const ModalContainer = styled.div`
-    background-color: rgb(157 197 197);
+    background-color: #9dc5c5;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
+    //#8fb0b5 rgb(157 197 197) 9dc5c5
 `;
 
 export const DesktopModalContainer = styled(ModalContainer)`
@@ -27,10 +28,10 @@ export const Header = styled.h3`
 `;
 
 export const Message = styled.p`
-    color: #fff;
-    font-size: 20px;
+    color: #d96666;
+    font-size: 15px;
     font-weight: 500;
-    margin: 0 0 36px;
+    margin: 5px 0 0px;
     text-align: center;
 `;
 

@@ -21,13 +21,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // getNotes();
 
 interface SignupModalProps {
-    isModalVisible: boolean;
+    isSignupModalVisible: boolean;
     onBackDropClick: () => void;
     header: string;
     message?: string;
 }
 
-function RedBar() {
+function Bar() {
     return (
         <Box
         sx={{
@@ -38,30 +38,29 @@ function RedBar() {
 }
 
 
-const SignupModal: React.FC<SignupModalProps> = ({onBackDropClick, isModalVisible, header, message }) => {
+const SignupModal: React.FC<SignupModalProps> = ({onBackDropClick, isSignupModalVisible, header, message }) => {
 
     const { signup, currentUser } = useAuth(); // this function used directly from the authcontext
-    // const nameRef = useRef();
     const nameRef = React.useRef<any>(null);
     const emailRef = React.useRef<any>(null);
     const passwordRef = React.useRef<any>(null);
     const passwordconfirmRef = React.useRef<any>(null);
     const [error, setError] = useState('');
 
-    if(!isModalVisible) {
+    if(!isSignupModalVisible) {
         return null
     }
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         
-        if(passwordRef.current === passwordconfirmRef.current ) {
+        if(passwordRef.current?.value !== passwordconfirmRef.current?.value ) {
             return setError('Password doesn`t match');
         }
 
         try {
             setError('');
-            await signup(emailRef.current?.value, passwordRef.current?.value)
+            signup(emailRef.current?.value, passwordRef.current?.value)
 
         } catch {
             setError('Failed to create a user');
@@ -70,50 +69,30 @@ const SignupModal: React.FC<SignupModalProps> = ({onBackDropClick, isModalVisibl
     
     return (<Modal onBackDropClick={onBackDropClick} >
         <DesktopModalContainer>
-                <Header>{message}</Header>
+            <Header>{message}</Header>
             <Form onSubmit={handleSubmit}>
-                {message && <Message>{error}</Message>}
-                <div>
-                    {/* <TextField id="outlined-basic" label="Name" variant="outlined" 
-                    ref={nameRef} autoComplete="off" required
-                    /> */}
-                    <FormGroup id="name">
-                    <FormLabel>Name</FormLabel>
-                        <FormControl type="name" ref={nameRef} required />
-                    </FormGroup>
-                </div>
-                <RedBar />
-                <div>
-                    {/* <TextField id="outlined-basic" label="Email" variant="outlined" 
-                    ref={emailRef} autoComplete="off" required
-                    /> */}
-                    <FormGroup id="email">
-                    <FormLabel>Email</FormLabel>
-                        <FormControl type="email" ref={emailRef} required />
-                    </FormGroup>
-                </div>
-                <RedBar />
-                <div>
-                    {/* <TextField id="outlined-password-input" label="Password" type="password" variant="outlined" autoComplete="off" required
-                    ref={passwordRef}
-                    /> */}
+                <FormGroup id="name">
+                <FormLabel>Name</FormLabel>
+                    <FormControl type="name" ref={nameRef} required />
+                </FormGroup>
+                <Bar/>
+                <FormGroup id="email">
+                <FormLabel>Email</FormLabel>
+                    <FormControl type="email" ref={emailRef} required />
+                </FormGroup>
+                <Bar/>
                     <FormGroup id="password">
                     <FormLabel>Password</FormLabel>
                         <FormControl type="password" ref={passwordRef} required />
                     </FormGroup>
-                </div>
-                <RedBar />
-                <div>
-                    {/* <TextField id="outlined-password-basic" label="Password Confirmation" type="password" variant="outlined" autoComplete="off"
-                    ref={passwordconfirmRef} required
-                    /> */}
-                    <FormGroup id="confirmpassword">
-                    <FormLabel>Confirm Password</FormLabel>
-                        <FormControl type="password" ref={passwordconfirmRef} required />
-                    </FormGroup>
-                </div>
-                <RedBar />
-                <Button type="submit" variant="contained" style={{backgroundColor: "hsl(202deg 29% 46%)", color:"#fff"}} >Sign In</Button>
+                <Bar/>
+                <FormGroup id="confirmpassword">
+                <FormLabel>Confirm Password</FormLabel>
+                    <FormControl type="password" ref={passwordconfirmRef} required />
+                </FormGroup>
+                <Bar/>
+                <Button type="submit" variant="contained" style={{backgroundColor: "hsl(202deg 29% 46%)", color:"#fff", textAlign:"center"}} >Sign Up</Button>
+                {message && <Message>{error}</Message>}
             </Form>
         </DesktopModalContainer>
     </Modal>);

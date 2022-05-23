@@ -15,8 +15,8 @@ type Props = {
 
 const CartItem: React.FC<Props> = ({item, addToCart, removeFromCart}) => (
     <Wrapper>
-        <div>
-            <h3>{item.title}</h3>
+        <div className="cart-item">
+            <h6>{item.title}</h6>
             <div className="information">
                 <p>Price : ${item.price}</p>
                 <p>Total : ${(item.amount * item.price).toFixed(2)}</p>
@@ -26,6 +26,7 @@ const CartItem: React.FC<Props> = ({item, addToCart, removeFromCart}) => (
                     disableElevation
                     variant="contained"
                     onClick={() => removeFromCart(item.id)}
+                    style={{backgroundColor:"#8fb0b5"}}
                 >
                     -
                 </Button>
@@ -34,6 +35,7 @@ const CartItem: React.FC<Props> = ({item, addToCart, removeFromCart}) => (
                     disableElevation
                     variant="contained"
                     onClick={() => addToCart(item)}
+                    style={{backgroundColor:"#8fb0b5"}}
                 >
                     +
                 </Button>

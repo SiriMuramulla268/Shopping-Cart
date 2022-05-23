@@ -42,7 +42,8 @@ export const Wrapper = styled.div`
     }
 
     .addToCartButton {
-        background-color: rgb(157 197 197);
+        background-color: #8fb0b5;
+        // rgb(157 197 197);
     }
 
     .favourite {

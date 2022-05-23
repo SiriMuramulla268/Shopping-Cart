@@ -17,8 +17,15 @@ export const Wrapper = styled.div`
     }
 
     img {
-        max-width : 80px;
+        max-width: 100px;
+        max-height: 87px;
         object-fit: cover;
         margin-left: 40px;
+        margin-right: 15px;
+        margin-top: 15px;
+    }
+
+    .cart-item{
+        margin-top: 30px;
     }
 `;
