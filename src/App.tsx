@@ -22,6 +22,7 @@ import SignupModal from './SignupModal/SignupModal';
 import { Wrapper } from  './App.styles';
 import { StyledButton } from './App.styles';
 import { AuthProvider } from './Contexts/AuthContext';
+
 //Types
 export type CartItemType = {
   id : string; 
@@ -32,6 +33,7 @@ export type CartItemType = {
   title : string;
   amount : number;
   wish : string;
+  rating: {rate:any};
 }
 
 // * Promise <CartItemType[]> denotes the return data would be the described type array
@@ -41,20 +43,37 @@ const getProducts = async () : Promise <CartItemType[]> =>
 function App() {
   const [cartOpen, setCartOpen] = useState(false);
   const [itemExist, setItemExist] = useState(false);
+  const [APIData, setAPIData] = useState([] as CartItemType[]);
   const [cartItems, setCartItems] = useState([] as CartItemType[]);
   const [wishList, setWishList] = useState([] as CartItemType[]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isSignupModalVisible, setIsSignupModalVisible] = useState(false);
   const [user, setUser] = useState();
 
-  const { data, isLoading, error } = useQuery<CartItemType[]>(
-    'products', 
-    getProducts,
-  );
-  if(isLoading)
-    return <LinearProgress/>  //progress bar displayed at the top
-  if(error)
-    return <div>Something went wrong ...</div>;  
+  //set API data
+  function ProductData() {
+    const { data, isLoading, error } = useQuery<CartItemType[]>('products', getProducts);
+    if(data && data.length > 0 && APIData.length ==0) {
+      setAPIData(data);
+    }
+    if(isLoading)
+      return <LinearProgress/>  //progress bar displayed at the top
+    if(error)
+      return <div>Something went wrong ...</div>;  
+  }
+  ProductData()
+
+  //Search products
+  const searchItems = (searchValue: string) => {
+    if(searchValue == '') {
+      setAPIData([])
+      ProductData()
+    }
+    const filteredData = APIData.filter((item) => {
+      return Object.values(item).join('').toLowerCase().includes(searchValue.toLowerCase())
+    })
+    setAPIData(filteredData);
+  }
 
   const getTotalItem = (items: CartItemType[]) => 
     //implicit return with reducer function 
@@ -120,8 +139,7 @@ function App() {
           <div className="container-fluid">
             <h1 className="heading">YourCart <ShoppingBasketIcon/></h1>
             <form className="d-flex">
-              <input className="form-control me-2 search" type="search" placeholder="Search" aria-label="Search"/>
-              <button className="btn btn-outline-success search-btn" type="submit">Search</button>
+              <input className="form-control me-2 search" type="search" placeholder="Search" aria-label="Search" onChange={(e) => searchItems(e.target.value)}/>
               <StyledButton> 
                 <div className='signup'>  
                   <SignupIcon onClick={toggleSignupModal} style={{color: "#e0e2e5"}}/>  
@@ -149,7 +167,7 @@ function App() {
           </div>
         </nav>
         <Grid container spacing={3}>
-          {data?.map(item => (
+          {APIData?.map(item => (
             <Grid item key={item.id} xs={12} sm={3}>
                 <Item item={item} handleAddToCart={handleAddToCart} cartItems={cartItems} handleWishlist={handleWishlist}/>
             </Grid>

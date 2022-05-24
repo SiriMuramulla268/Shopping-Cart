@@ -5,6 +5,9 @@
   "dependencies": {
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
+    "@material-ui/lab": "^4.0.0-alpha.61",
+    "@stripe/react-stripe-js": "^1.8.0",
+    "@stripe/stripe-js": "^1.29.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
     "@testing-library/user-event": "^13.5.0",
@@ -21,6 +24,9 @@
     "react-query": "^3.39.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "react-simple-star-rating": "^4.0.5",
+    "react-star-rating": "^1.4.2",
+    "react-star-ratings": "^2.3.0",
     "styled-components": "^5.3.5",
     "typescript": "^4.6.4",
     "web-vitals": "^2.1.4"
@@ -51,7 +57,9 @@
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/react-star-ratings": "^2.3.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SiriMuramulla268/Shopping-Cart.git"

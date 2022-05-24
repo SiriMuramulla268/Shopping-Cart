@@ -29,9 +29,12 @@
                     removeFromCart={removeFromCart}
                 /> 
             ))}
-            <div>
-                {cartItems.length > 0 && <p className="total-price">&nbsp;Total Price : ${calculateTotal(cartItems).toFixed(2)}</p>}
-                {/* {cartItems.length > 0 && <button>Proceed to pay</button>} */}
+            <div className="text-center">
+                {/* {cartItems.length > 0 && <p className="total-price">&nbsp;Total Price : ${calculateTotal(cartItems).toFixed(2)}</p>} */}
+                {/* {cartItems.length > 0 && <button>Proceed to pay</button>} */} 
+                {cartItems.length > 0 &&
+                    <button className="btn btn-outline search-btn total-price" type="submit" >Proceed To Pay&nbsp;&nbsp;&nbsp;${calculateTotal(cartItems).toFixed(2)}</button>
+                }
             </div>
         </Wrapper>
     )

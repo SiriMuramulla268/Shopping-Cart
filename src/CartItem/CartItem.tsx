@@ -21,21 +21,21 @@ const CartItem: React.FC<Props> = ({item, addToCart, removeFromCart}) => (
                 <p>Price : ${item.price}</p>
                 <p>Total : ${(item.amount * item.price).toFixed(2)}</p>
             </div>
-            <div className='buttons'>
-                <Button size="small"
+            <div className='button-div'>
+                <Button 
+                    className="buttons"
                     disableElevation
                     variant="contained"
                     onClick={() => removeFromCart(item.id)}
-                    style={{backgroundColor:"#8fb0b5"}}
                 >
                     -
                 </Button>
                 <p>{item.amount}</p>
-                <Button size="small"
+                <Button 
+                    className="buttons"
                     disableElevation
                     variant="contained"
                     onClick={() => addToCart(item)}
-                    style={{backgroundColor:"#8fb0b5"}}
                 >
                     +
                 </Button>

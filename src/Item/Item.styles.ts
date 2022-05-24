@@ -50,4 +50,9 @@ export const Wrapper = styled.div`
         height : 0px;
         text-align: end;
     }
+
+    
+    .MuiButton-root:hover {
+        background-color: #8fb0b5
+    }
 `;

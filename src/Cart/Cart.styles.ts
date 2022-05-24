@@ -20,10 +20,14 @@ export const Wrapper = styled.aside`
 
     .total-price {
         margin-top: 30px;
-        background-color: #8fb0b5;
+        background-color: #6a8193;
         color: #fff;
-        font-size: 20px;
         text-align: center;
+    }
+
+    .total-price:hover {
+        background-color: #8fb0b5;
+        color: white;
     }
 
     .empty-cart {

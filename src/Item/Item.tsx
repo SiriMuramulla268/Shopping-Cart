@@ -2,6 +2,7 @@ import { CardMediaTypeMap } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import FavoriteBorderOutlined from '@material-ui/icons/FavoriteBorderOutlined';
 import Typography from '@material-ui/core/Typography';
+import Rating from '@material-ui/lab/Rating';
 //Types
 import { CartItemType } from '../App';
 import CartItem from '../CartItem/CartItem';
@@ -34,9 +35,9 @@ const Item: React.FC<Props> = ({ item, handleAddToCart, cartItems, handleWishlis
                     {item.title}
                 </Typography>
             </div>
-            
-                {/* <h5>{item.description}</h5> */}
-            
+            <div className='title'>
+                <Rating name="size-small" defaultValue={item.rating.rate} size="small" />
+            </div>
             <Button className="addToCartButton" onClick={() => handleAddToCart(item)}> Add To Cart </Button>
             </>
         </Wrapper>
