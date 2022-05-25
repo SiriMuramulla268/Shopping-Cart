@@ -34,6 +34,15 @@ export const Wrapper = styled.div`
         margin: 5px 0 10px;
         texy-align: center;
     }
+    
+    .message {
+        // background-color: #e0e2e5;
+        margin: 20% 20% 0 20%;
+    }
+
+    .continue {
+        margin-left: 45%;
+    }
 `; 
 
 export const StyledButton = styled(IconButton)`

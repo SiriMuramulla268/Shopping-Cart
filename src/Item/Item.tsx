@@ -36,7 +36,7 @@ const Item: React.FC<Props> = ({ item, handleAddToCart, cartItems, handleWishlis
                 </Typography>
             </div>
             <div className='title'>
-                <Rating name="size-small" defaultValue={item.rating.rate} size="small" />
+                <Rating name="size-small" defaultValue={item.rating.rate} size="small" readOnly/>
             </div>
             <Button className="addToCartButton" onClick={() => handleAddToCart(item)}> Add To Cart </Button>
             </>

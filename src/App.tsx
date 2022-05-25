@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 //components from MUI
 import Drawer from '@material-ui/core/Drawer';
@@ -9,7 +9,6 @@ import Grid from '@material-ui/core/Grid';
 import AddShoppingCartIcon from '@material-ui/icons/ShoppingCartOutlined';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import Badge from '@material-ui/core/Badge';
-import Box from '@material-ui/core/Box';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import LoginIcon from '@material-ui/icons/LockOpen'; 
 import SignupIcon from '@material-ui/icons/HowToReg';
@@ -22,6 +21,7 @@ import SignupModal from './SignupModal/SignupModal';
 import { Wrapper } from  './App.styles';
 import { StyledButton } from './App.styles';
 import { AuthProvider } from './Contexts/AuthContext';
+import Message from './PaymentMessage/PaymentMessage';
 
 //Types
 export type CartItemType = {
@@ -48,7 +48,22 @@ function App() {
   const [wishList, setWishList] = useState([] as CartItemType[]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isSignupModalVisible, setIsSignupModalVisible] = useState(false);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState('');
+  const [message, setMessage] = useState('');
+  const [check, setCheck] = useState(false);
+
+  useEffect (() => {
+    const query = new URLSearchParams(window.location.search);
+    if (query.get("success")) {
+      setCheck(true)
+      setMessage(" Yay! Order has placed successfully! 🛒 You will receive an email to confirm.");
+    }
+    if (query.get("canceled")) {
+      setCheck(true)
+      setMessage("Order canceled -- please try again.");
+    }
+
+  },[]);
 
   //set API data
   function ProductData() {
@@ -126,55 +141,64 @@ function App() {
   }
 
   return (
-    <AuthProvider>
-      <Wrapper>
-        <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
-          <Cart 
-            cartItems={cartItems} 
-            addTocart={handleAddToCart}
-            removeFromCart={handleRemoveFromCart}
-          />
-        </Drawer>
-        <nav className="navbar navbar-light nav">
-          <div className="container-fluid">
-            <h1 className="heading">YourCart <ShoppingBasketIcon/></h1>
-            <form className="d-flex">
-              <input className="form-control me-2 search" type="search" placeholder="Search" aria-label="Search" onChange={(e) => searchItems(e.target.value)}/>
-              <StyledButton> 
-                <div className='signup'>  
-                  <SignupIcon onClick={toggleSignupModal} style={{color: "#e0e2e5"}}/>  
-                  <SignupModal isSignupModalVisible={isSignupModalVisible} onBackDropClick={toggleSignupModal} header="YourCart :)" message="Signup"/> 
-                </div>
-              </StyledButton>
-              <StyledButton>
-                <div className='lock'>
-                  <LoginIcon onClick={toggleModal} style={{color: "#e0e2e5"}}/>
-                  <LoginModal isModalVisible={isModalVisible} onBackDropClick={toggleModal} header="YourCart :)" message="Login" user={setUser}/>
-                </div>
-              </StyledButton> 
-              <StyledButton>
-                <div className='login'>
-                  <AccountCircle style={{color: "#e0e2e5"}}/>
-                </div>
-                <span className='user'>{user}</span>
-              </StyledButton> 
-              <StyledButton>  
-                <Badge badgeContent={getTotalItem(cartItems)} color='error' style={{color: "#e0e2e5"}}>
-                    <AddShoppingCartIcon onClick={() => setCartOpen(true)}/>
-                </Badge>
-              </StyledButton>
-            </form>
-          </div>
-        </nav>
-        <Grid container spacing={3}>
-          {APIData?.map(item => (
-            <Grid item key={item.id} xs={12} sm={3}>
-                <Item item={item} handleAddToCart={handleAddToCart} cartItems={cartItems} handleWishlist={handleWishlist}/>
-            </Grid>
-          ))}   
-        </Grid>
-      </Wrapper>
-    </AuthProvider>
+    <>
+    {check 
+      ? 
+      <Message message={message} /> 
+      :
+      <AuthProvider>
+        <Wrapper>
+          <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
+            <Cart 
+              cartItems={cartItems} 
+              addTocart={handleAddToCart}
+              removeFromCart={handleRemoveFromCart}
+              user={user}
+            />
+          </Drawer>
+          <nav className="navbar navbar-light nav">
+            <div className="container-fluid">
+              <h1 className="heading">YourCart <ShoppingBasketIcon/></h1>
+              <form className="d-flex">
+                <input className="form-control me-2 search" type="search" placeholder="Search" aria-label="Search" onChange={(e) => searchItems(e.target.value)}/>
+                <StyledButton> 
+                  <div className='signup'>  
+                    <SignupIcon onClick={toggleSignupModal} style={{color: "#e0e2e5"}}/>  
+                    <SignupModal isSignupModalVisible={isSignupModalVisible} onBackDropClick={toggleSignupModal} header="YourCart :)" message="Signup"/> 
+                  </div>
+                </StyledButton>
+                <StyledButton>
+                  <div className='lock'>
+                    <LoginIcon onClick={toggleModal} style={{color: "#e0e2e5"}}/>
+                    <LoginModal isModalVisible={isModalVisible} onBackDropClick={toggleModal} header="YourCart :)" message="Login" user={setUser}/>
+                  </div>
+                </StyledButton> 
+                <StyledButton>
+                  <div className='login'>
+                    <AccountCircle style={{color: "#e0e2e5"}}/>
+                  </div>
+                  <span className='user'>{user}</span>
+                </StyledButton> 
+                <StyledButton>  
+                  <Badge badgeContent={getTotalItem(cartItems)} color='error' style={{color: "#e0e2e5"}}>
+                      <AddShoppingCartIcon onClick={() => setCartOpen(true)}/>
+                  </Badge>
+                </StyledButton>
+              </form>
+            </div>
+          </nav>
+          <Grid container spacing={3}>
+            {APIData?.map(item => (
+              <Grid item key={item.id} xs={12} sm={3}>
+                  <Item item={item} handleAddToCart={handleAddToCart} cartItems={cartItems} handleWishlist={handleWishlist}/>
+              </Grid>
+            ))}   
+          </Grid>
+        </Wrapper>
+      </AuthProvider> 
+    }
+    
+    </>
   );
 }
 

@@ -60,7 +60,7 @@ const SignupModal: React.FC<SignupModalProps> = ({onBackDropClick, isSignupModal
 
         try {
             setError('');
-            signup(emailRef.current?.value, passwordRef.current?.value)
+            signup(emailRef.current?.value, passwordRef.current?.value, nameRef.current?.value)
 
         } catch {
             setError('Failed to create a user');

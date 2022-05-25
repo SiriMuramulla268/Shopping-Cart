@@ -1,15 +1,12 @@
 import React, {useRef, useState} from 'react'
 import Modal from './Modal';
 import {DesktopModalContainer, Header, Message, DesktopCloseButton, CloseSign} from './LoginModal.styles';
-import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import db from '../FirebaseConfig/Firebase';
 import { Form, FormGroup, FormLabel, FormControl } from "react-bootstrap";
 import { useAuth } from '../Contexts/AuthContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { connectFirestoreEmulator } from 'firebase/firestore';
-import { isAnyArrayBuffer } from 'util/types';
 
 interface LoginModalProps {
     isModalVisible: boolean;
@@ -32,10 +29,11 @@ function Bar() {
 
 const LoginModal: React.FC<LoginModalProps> = ({onBackDropClick, isModalVisible, header, message, user }) => {
     const {signup , currentUser, login} = useAuth(); // this function used directly from the authcontext
-    user(currentUser?.email)
     const emailRef = React.useRef<any>(null);
     const passwordRef = React.useRef<any>(null);
     const [error, setError] = useState('');
+
+    user(currentUser?.displayName)
 
     if(!isModalVisible) {
         return null
