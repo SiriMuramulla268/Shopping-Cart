@@ -10,12 +10,12 @@ export const Wrapper = styled.aside`
         justify-content:center;
     }
 
-    .heading {
+    .headings {
         color: #e0e2e5;
         font-size:  25px;
         line-height: 1em;
         font-weight: 400;
-        margin: 5px 0 10px;
+        margin: 1% 32% 1%;
     }
 
     .total-price {
@@ -34,5 +34,10 @@ export const Wrapper = styled.aside`
         color: #8fb0b5;
         font-size: 25px;
         text-align: center;
+    }
+
+    .arrow {
+        color: #e0e2e5;
+        max-height: 20px;
     }
 `;

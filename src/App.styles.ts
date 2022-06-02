@@ -46,10 +46,6 @@ export const Wrapper = styled.div`
 `; 
 
 export const StyledButton = styled(IconButton)`
-    // position: fixed;
-    // z-index: 100;
-    // right: 3px;
-    // top: 5px;
 
     .login {
         margin-right: 3px;
@@ -69,6 +65,24 @@ export const StyledButton = styled(IconButton)`
     .user{
         color: #fff;
         font-size:15px;
+    }   
+
+    .popper {
+        position: absolute !important;
+        top: 45px !important;
+        left: 25px !important;
     }
 
+    .menu-list {
+        background-color: #6a8193;
+    }
+
+    .menu-item {
+        color : #fff;
+        font-size: 12px;
+    }
+
+    .arrow-dropdown {
+        color: #e0e2e5;
+    }
 `;

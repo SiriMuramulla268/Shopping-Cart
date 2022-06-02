@@ -11,7 +11,7 @@ import { Form, FormGroup, FormLabel, FormControl } from "react-bootstrap";
 import { useAuth } from '../Contexts/AuthContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// import { collection, getDocs } from "firebase/firestore";
+// import { collection, getDocs, setDoc } from "firebase/firestore";
 // export const getNotes = async () => {
 //     const notesSnapshot = await getDocs(collection(db, "users"));
 //     const notesList = notesSnapshot.docs.map((doc) => doc.data());
@@ -26,17 +26,6 @@ interface SignupModalProps {
     header: string;
     message?: string;
 }
-
-function Bar() {
-    return (
-        <Box
-        sx={{
-            height: 20,
-        }}
-        />
-    );
-}
-
 
 const SignupModal: React.FC<SignupModalProps> = ({onBackDropClick, isSignupModalVisible, header, message }) => {
 
@@ -75,22 +64,22 @@ const SignupModal: React.FC<SignupModalProps> = ({onBackDropClick, isSignupModal
                 <FormLabel>Name</FormLabel>
                     <FormControl type="name" ref={nameRef} required />
                 </FormGroup>
-                <Bar/>
+               <Box sx={{ height: 20 }}/>
                 <FormGroup id="email">
                 <FormLabel>Email</FormLabel>
                     <FormControl type="email" ref={emailRef} required />
                 </FormGroup>
-                <Bar/>
+               <Box sx={{ height: 20 }}/>
                     <FormGroup id="password">
                     <FormLabel>Password</FormLabel>
                         <FormControl type="password" ref={passwordRef} required />
                     </FormGroup>
-                <Bar/>
+               <Box sx={{ height: 20 }}/>
                 <FormGroup id="confirmpassword">
                 <FormLabel>Confirm Password</FormLabel>
                     <FormControl type="password" ref={passwordconfirmRef} required />
                 </FormGroup>
-                <Bar/>
+               <Box sx={{ height: 20 }}/>
                 <Button type="submit" variant="contained" style={{backgroundColor: "hsl(202deg 29% 46%)", color:"#fff", textAlign:"center"}} >Sign Up</Button>
                 {message && <Message>{error}</Message>}
             </Form>

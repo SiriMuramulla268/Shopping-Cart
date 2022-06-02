@@ -16,24 +16,13 @@ interface LoginModalProps {
     user: React.Dispatch<React.SetStateAction<any>>;
 }
 
-
-function Bar() {
-    return (
-        <Box
-        sx={{
-            height: 20,
-        }}
-        />
-    );
-}
-
 const LoginModal: React.FC<LoginModalProps> = ({onBackDropClick, isModalVisible, header, message, user }) => {
     const {signup , currentUser, login} = useAuth(); // this function used directly from the authcontext
     const emailRef = React.useRef<any>(null);
     const passwordRef = React.useRef<any>(null);
     const [error, setError] = useState('');
 
-    user(currentUser?.displayName)
+    user(currentUser?.displayName);
 
     if(!isModalVisible) {
         return null
@@ -44,7 +33,6 @@ const LoginModal: React.FC<LoginModalProps> = ({onBackDropClick, isModalVisible,
         try {
             setError('');
             const result = login(emailRef.current?.value, passwordRef.current?.value);
-            // console.log(result);
         } catch {
             setError('Failed to Login');
         }
@@ -61,15 +49,14 @@ const LoginModal: React.FC<LoginModalProps> = ({onBackDropClick, isModalVisible,
                 <FormLabel>Email</FormLabel>
                     <FormControl type="email" ref={emailRef} required />
                 </FormGroup>
-                <Bar/>
+                <Box sx={{ height: 20, }} />
                 <FormGroup id="password">
                 <FormLabel>Password</FormLabel>
                     <FormControl type="password" ref={passwordRef} required />
                 </FormGroup>
-                <Bar/>
+                <Box sx={{ height: 20, }} />
                 <Button type="submit" variant="contained" style={{backgroundColor: "hsl(202deg 29% 46%)", color:"#fff"}}>Login</Button>
             </Form>
-            
         </DesktopModalContainer>
     </Modal>);
 }

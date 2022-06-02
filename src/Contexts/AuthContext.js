@@ -30,7 +30,6 @@ export function AuthProvider({ children }) {
   function login(email, password) {
     signInWithEmailAndPassword(auth, email, password).then((res) => {
       // dispatch({ type: "LOGIN", payload: res.user });
-      console.log(res)
       return res
     })
     .catch((err) => {

@@ -3,8 +3,6 @@ import { useQuery } from 'react-query';
 //components from MUI
 import Drawer from '@material-ui/core/Drawer';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Backdrop from '@material-ui/core/Backdrop';
 import Grid from '@material-ui/core/Grid';
 import AddShoppingCartIcon from '@material-ui/icons/ShoppingCartOutlined';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
@@ -12,6 +10,17 @@ import Badge from '@material-ui/core/Badge';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import LoginIcon from '@material-ui/icons/LockOpen'; 
 import SignupIcon from '@material-ui/icons/HowToReg';
+
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+
 //components
 import Item from './Item/Item';
 import Cart from './Cart/Cart';
@@ -22,6 +31,9 @@ import { Wrapper } from  './App.styles';
 import { StyledButton } from './App.styles';
 import { AuthProvider } from './Contexts/AuthContext';
 import Message from './PaymentMessage/PaymentMessage';
+
+import { collection, addDoc } from "firebase/firestore"; 
+import db from './FirebaseConfig/Firebase';
 
 //Types
 export type CartItemType = {
@@ -34,11 +46,15 @@ export type CartItemType = {
   amount : number;
   wish : string;
   rating: {rate:any};
+  displayName: string;
+  email: string;
 }
 
 // * Promise <CartItemType[]> denotes the return data would be the described type array
 const getProducts = async () : Promise <CartItemType[]> => 
   await (await fetch('https://fakestoreapi.com/products')).json();   // to convert api data into json we used two await here
+
+const options = ['My Orders', 'Logout'];
 
 function App() {
   const [cartOpen, setCartOpen] = useState(false);
@@ -51,6 +67,9 @@ function App() {
   const [user, setUser] = useState('');
   const [message, setMessage] = useState('');
   const [check, setCheck] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef<HTMLDivElement>(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   useEffect (() => {
     const query = new URLSearchParams(window.location.search);
@@ -76,7 +95,7 @@ function App() {
     if(error)
       return <div>Something went wrong ...</div>;  
   }
-  ProductData()
+  ProductData();
 
   //Search products
   const searchItems = (searchValue: string) => {
@@ -105,11 +124,11 @@ function App() {
           item.id === clickedItem.id ? {...item, amount: item.amount + 1} : item
         ));
       }
-
       // if first time item is added
       //here the amount parameter 1 is added initially to data object
       return [...prev, {  ...clickedItem, amount: 1}]
     })
+    
   };
   
   const handleRemoveFromCart = (id: string) => {
@@ -140,6 +159,33 @@ function App() {
     setIsSignupModalVisible(wasModalVisible => !wasModalVisible) 
   }
 
+  const handleClose = (e: Event) => {
+    if (
+      anchorRef.current &&
+      anchorRef.current.contains(e.target as HTMLElement)
+    ) {
+      return;
+    }
+    setOpen(false);
+  }
+
+  const handleMenuItemClick = (
+      event: React.MouseEvent<HTMLLIElement, MouseEvent>,
+      index: number,
+    ) => {
+      setSelectedIndex(index);
+      setOpen(false);
+  }
+
+  const handleButtonToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  // Added products to firebase collection
+  // APIData?.map((item,key)=> {
+  //   addDoc(collection(db, "all_products"), item);
+  // });
+
   return (
     <>
     {check 
@@ -148,12 +194,14 @@ function App() {
       :
       <AuthProvider>
         <Wrapper>
-          <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
+        {/* onClose={() => setCartOpen(false)} variant={"persistent"} */ }
+          <Drawer anchor='right' open={cartOpen} variant={"persistent"}>
             <Cart 
               cartItems={cartItems} 
               addTocart={handleAddToCart}
               removeFromCart={handleRemoveFromCart}
               user={user}
+              cartOpen={setCartOpen}
             />
           </Drawer>
           <nav className="navbar navbar-light nav">
@@ -173,11 +221,37 @@ function App() {
                     <LoginModal isModalVisible={isModalVisible} onBackDropClick={toggleModal} header="YourCart :)" message="Login" user={setUser}/>
                   </div>
                 </StyledButton> 
-                <StyledButton>
+                <StyledButton onClick={handleButtonToggle}>
                   <div className='login'>
                     <AccountCircle style={{color: "#e0e2e5"}}/>
                   </div>
-                  <span className='user'>{user}</span>
+                      <span className='user'>Hi! {user}</span>
+                      <ArrowDropDownIcon className='arrow-dropdown'/>
+                    <Popper
+                      open={open}
+                      anchorEl={anchorRef.current}
+                      role={undefined}
+                      transition
+                      disablePortal
+                      className='popper'
+                    >
+                      <Paper className="paper">
+                        <ClickAwayListener  onClickAway={(e:any) => handleClose(e)}>
+                          <MenuList className="menu-list" id="split-button-menu" autoFocusItem>
+                            {options.map((option, index) => (
+                              <MenuItem className="menu-item"
+                                key={option}
+                                disabled={index === 2}
+                                selected={index === selectedIndex}
+                                onClick={(event) => handleMenuItemClick(event, index)}
+                              >
+                                {option}
+                              </MenuItem>
+                            ))}
+                          </MenuList>
+                        </ClickAwayListener>
+                      </Paper>
+                    </Popper>
                 </StyledButton> 
                 <StyledButton>  
                   <Badge badgeContent={getTotalItem(cartItems)} color='error' style={{color: "#e0e2e5"}}>
