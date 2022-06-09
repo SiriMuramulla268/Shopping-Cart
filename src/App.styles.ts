@@ -5,6 +5,10 @@ import IconButton from '@material-ui/core/IconButton'
 export const Wrapper = styled.div`
     margin: 3px;
 
+    .order-list {
+        color: black;
+    }
+
     .nav {
         background-color: #6a8193;
         margin-bottom: 30px;
@@ -43,6 +47,15 @@ export const Wrapper = styled.div`
     .continue {
         margin-left: 45%;
     }
+
+    .table {
+        background-color: #e1eaed78;
+    }
+
+    .order-heading {
+        color: #abbac5
+    }
+   
 `; 
 
 export const StyledButton = styled(IconButton)`

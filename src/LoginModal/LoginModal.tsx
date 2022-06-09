@@ -22,7 +22,7 @@ const LoginModal: React.FC<LoginModalProps> = ({onBackDropClick, isModalVisible,
     const passwordRef = React.useRef<any>(null);
     const [error, setError] = useState('');
 
-    user(currentUser?.displayName);
+    user(currentUser);
 
     if(!isModalVisible) {
         return null

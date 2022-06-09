@@ -12,7 +12,7 @@
     cartItems: CartItemType[];
     addTocart: (clickedItem : CartItemType) => void;
     removeFromCart: (id: string) => void;  
-    user: string;
+    user: string | undefined;
     cartOpen: React.Dispatch<React.SetStateAction<any>>;
  }
 
